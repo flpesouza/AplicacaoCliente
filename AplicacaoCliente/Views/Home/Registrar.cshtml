@@ -1,0 +1,159 @@
+﻿@model AplicacaoCliente.Models.ClienteModel
+
+<h2>@(Model.Id == 0 ? "Registrar Cliente" : "Editar Cliente")</h2>
+
+<form asp-controller="Home" asp-action="Registrar" method="post">
+	<input type="hidden" asp-for="Id" />
+
+	<div class="row">
+		<div class="col-lg-3">
+			<label>Nome</label>
+			<input asp-for="Nome" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Data Cadastro</label>
+			<input asp-for="Data_Cadastro" type="date" class="form-control" value="@Model.Data_Cadastro.ToString("yyyy-MM-dd")" />
+		</div>
+
+		<div class="col-lg-3">
+			<label>CPF</label>
+			<input asp-for="Cpf_Cnpj" type="text" id="Cpf_Cnpj" class="form-control" placeholder="Digite o CPF ou CNPJ" />
+		</div>
+
+
+		<div class="col-lg-3">
+			<label>Data nascimento</label>
+			<input asp-for="Data_Nascimento" type="date" class="form-control" value="@(Model.Data_Nascimento != DateTime.MinValue ? Model.Data_Nascimento.ToString("yyyy-MM-dd") : "")" />
+		</div>
+
+
+		<div class="col-lg-3">
+			<label>Tipo</label>
+			<input asp-for="Tipo" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Telefone</label>
+			<input asp-for="Telefone" id="Telefone" name="Telefone" class="form-control" placeholder="(00) 00000-0000" maxlength="15" />
+		</div>
+
+		<div class="col-lg-3">
+			<label>Email</label>
+			<input asp-for="Email" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>CEP</label>
+			<input asp-for="Cep" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Logradouro</label>
+			<input asp-for="Logradouro" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Numero</label>
+			<input asp-for="Numero" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Bairro</label>
+			<input asp-for="Bairro" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Complemento</label>
+			<input asp-for="Complemento" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>Cidade</label>
+			<input asp-for="Cidade" class="form-control"/>
+		</div>
+
+		<div class="col-lg-3">
+			<label>UF</label>
+			<input asp-for="UF" class="form-control"/>
+		</div>
+	</div>
+
+	<br /><br />
+	<button type="submit" class="btn btn-block btn-success">
+		@(Model.Id == 0 ? "Registrar Cliente" : "Atualizar Cliente")
+	</button>
+
+</form>
+
+<!-- Aqui vem o jQuery + jQuery Mask Plugin + Aplicar a máscara -->
+<!--Script para CPF/CNPJ-->
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const cpfCnpjInput = document.getElementById('Cpf_Cnpj');
+
+		cpfCnpjInput.addEventListener('input', function (e) {
+			let value = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+
+			// Limita no máximo 14 dígitos
+			if (value.length > 14) {
+				value = value.substring(0, 14);
+			}
+
+			if (value.length <= 11) {
+				// Aplica máscara de CPF
+				value = value.replace(/(\d{3})(\d)/, "$1.$2");
+				value = value.replace(/(\d{3})(\d)/, "$1.$2");
+				value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+			} else {
+				// Aplica máscara de CNPJ
+				value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+				value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+				value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+				value = value.replace(/(\d{4})(\d)/, "$1-$2");
+			}
+
+			e.target.value = value;
+		});
+	});
+</script>
+
+<!--Script para Telefone-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const telefoneInput = document.getElementById('Telefone');
+
+		telefoneInput.addEventListener('input', function (e) {
+			let value = e.target.value.replace(/\D/g, ''); // Remove não números
+
+			// Limita no máximo 11 dígitos
+			if (value.length > 11) {
+				value = value.slice(0, 11);
+			}
+
+			// Aplica formatação
+			if (value.length <= 10) {
+				value = value.replace(/^(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+			} else {
+				value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, '($1) $2-$3');
+			}
+
+			e.target.value = value;
+		});
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
